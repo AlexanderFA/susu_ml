@@ -24,9 +24,8 @@ class Helper2:
 
     @staticmethod
     def calc_probability(x, theta):
-        # matrix = np.matrix(theta).T
-        x_theta = x * np.matrix(theta).T
-        # x_theta = np.dot(x, theta)
+        # x_theta = x * np.matrix(theta).T
+        x_theta = np.dot(x, theta)
         probability = Helper2.sigmoid(x_theta)
 
         return probability
@@ -37,7 +36,7 @@ class Helper2:
         probability = Helper2.calc_probability(x, theta)
         one = y * (np.log(probability))
         two = ((1 - y) * (np.log(1 - probability)))
-        slag = lam * np.sum(theta ** 2) / (2 * m)
+        slag = lam * np.sum(theta ** 2) / (2 * m)  # lam / 2 / len(x) * np.sum(np.square(theta))
         # print(slag)
         goal_func = -(1 / m) * (one + two).sum()
 
@@ -45,21 +44,11 @@ class Helper2:
 
     @staticmethod
     def compute_gradient(theta, x, y, lam):
+        m = len(x)
         probability = Helper2.calc_probability(x, theta)
         error = probability - y
 
-        m = len(x)
-        n = len(theta)
-        res = np.zeros(n)
+        tmp = error[:, np.newaxis] * x  # ошибку умножаем для каождого признака (столбца)
+        gradient = (1 / m) * np.sum(tmp, axis=0)  # считаем сумму по каждому столбцу (признаку)
 
-        for j in range(n):
-            koef = x[:, j]
-
-            if j == 0:
-                slag = 0
-            else:
-                slag = (lam / m) * np.sum(theta[j])
-
-            res[j] = (1 / m) * np.sum(np.multiply(error, koef)) + slag
-
-        return res
+        return gradient + (lam / m) * theta
