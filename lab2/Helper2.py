@@ -52,3 +52,9 @@ class Helper2:
         gradient = (1 / m) * np.sum(tmp, axis=0)  # считаем сумму по каждому столбцу (признаку)
 
         return gradient + (lam / m) * theta
+
+    @staticmethod
+    def predict(theta, x):
+        probability = Helper2.calc_probability(x, theta)
+        # print(probability)
+        return [x >= 0.5 for x in probability]

@@ -36,7 +36,7 @@ correct = [
     for (predicted_outcome, training_outcome) in combined_array
 ]
 coincides = sum(map(int, correct))
-accuracy = coincides * len(correct) // 100
+accuracy = coincides / (len(correct) / 100)
 print('Точность классификатора = {0}%' . format(accuracy))
 
 # Для студента, сдавшего экзамены на 45 и 85 баллов, оцените вероятность поступления.
