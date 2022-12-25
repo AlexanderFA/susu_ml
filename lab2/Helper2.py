@@ -16,7 +16,7 @@ class Helper2:
         n = x_poly.shape[1]  # 28 features
         theta = np.zeros(n)
 
-        return x_poly, y, theta
+        return x_poly, y, theta, pf
 
     @staticmethod
     def sigmoid(z):
