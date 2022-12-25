@@ -1,8 +1,4 @@
-import numpy as np
-import matplotlib.pyplot as plt
 from matplotlib import pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
-import random
 
 class ChartBuilder2:
     @staticmethod
@@ -17,9 +13,9 @@ class ChartBuilder2:
         plt.show()
 
     @staticmethod
-    def build_training_3d(x, y):
+    def build_training_3d(data):
         fig = plt.figure()
-        ax = Axes3D(fig)
-        ax.scatter(x[:, 0], x[:, 1], y)
+        ax = fig.add_subplot(111, projection='3d')
+        ax.scatter(data.test1, data.test2, data.is_accepted)
 
         plt.show()
