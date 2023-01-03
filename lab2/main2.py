@@ -2,7 +2,6 @@ import pandas as pd
 from Helper2 import Helper2
 from ChartBuilder2 import ChartBuilder2
 import scipy.optimize as opt
-import numpy as np
 
 
 data1 = pd.read_csv('ex2data2.txt', names=['test1', 'test2', 'is_accepted'])
@@ -10,8 +9,8 @@ accepted_df = data1[data1['is_accepted'] == 1]
 rejected_df = data1[data1['is_accepted'] == 0]
 
 x_poly, y, theta, pf = Helper2.prepare_data(data1)
-# ChartBuilder2.build_training_data_chart(accepted_df, rejected_df)
-# ChartBuilder2.build_training_3d(data1)
+ChartBuilder2.build_training_data_chart(accepted_df, rejected_df)
+ChartBuilder2.build_training_3d(data1)
 
 # print(pd.DataFrame(x_poly).head(5))
 print('Целевая функция при нулевых тета:', Helper2.compute_cost(theta, x_poly, y, 0))
