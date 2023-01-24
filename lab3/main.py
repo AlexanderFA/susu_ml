@@ -91,12 +91,32 @@ def predict_classification(train_set, train_labels, test_row, num_neighbors):
 prediction = predict_classification(dataset, output, vector_compare, 3)
 print('Expected %d, Got %d.\n' % (label_compare, prediction))
 
-sys.exit()
+
+def k_nearest_neighbors(train_set, train_labels, test_set, num_neighbors):
+    # мы объявим такую функцию чтобы было удобно использовать  apply_along_axis (array_mep)
+    def call_predict_classification(test_row):
+        return predict_classification(train_set, train_labels, test_row, num_neighbors)
+
+    predictions = np.apply_along_axis(call_predict_classification, axis=1, arr=test_set)
+
+    return predictions
 
 
-features_train, features_test, labels_train, labels_test = train_test_split(features, labels, test_size=0.67, random_state=33, stratify=labels)
+# prediction_array = k_nearest_neighbors(features, labels, dataset, 3)
+# print(prediction_array)
+
+# features_train, features_test, labels_train, labels_test = train_test_split(features, labels, test_size=0.67, random_state=33, stratify=labels)
+features_train, features_test, labels_train, labels_test = train_test_split(features, labels, test_size=0.2)
 
 # почти тоже самое что _, counts = np.unique(labels_test, return_counts=True)
 print(f"Количество строк в y_train по классам: {np.bincount(labels_train)}")
 print(f"Количество строк в y_test по классам: {np.bincount(labels_test)}")
 print(f"Всего строк в датасете: {np.size(labels)}")
+
+
+prediction_array = k_nearest_neighbors(features_train, labels_train, features_test, 3)
+print(prediction_array)
+print(labels_test)
+
+
+sys.exit()
