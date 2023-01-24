@@ -47,7 +47,7 @@ def euclidean_distance(row1, row2):
 
 vector_compare = dataset[5]
 label_compare = output[5]
-# пример расчета евклидового расстояния между вектором 0 и 5 из свойств датасета
+# пример расчета евклидова расстояния между вектором 0 и 5 из свойств датасета
 distance = euclidean_distance(vector_compare, dataset[0])
 # print(distance)
 
@@ -114,9 +114,52 @@ print(f"Количество строк в y_test по классам: {np.binco
 print(f"Всего строк в датасете: {np.size(labels)}")
 
 
-prediction_array = k_nearest_neighbors(features_train, labels_train, features_test, 3)
-print(prediction_array)
-print(labels_test)
+labels_predicted = k_nearest_neighbors(features_train, labels_train, features_test, 3)
+# labels_predicted != labels_test - вернет массив несоответствий
+accuracy = np.mean(labels_predicted == labels_test)
+print("Точность предсказаний: {:.2f}%\n".format(accuracy * 100))
+
+accuracyX = np.arange(1, 61)
 
 
-sys.exit()
+def split_and_iterate_k(test_size=0.2, stratify=None, random_state=None):
+    features_train1, features_test1, labels_train1, labels_test1 = train_test_split(
+        features,
+        labels,
+        test_size=test_size,
+        random_state=random_state,
+        # stratify=labels
+        stratify=stratify
+    )
+    accuracy_y = np.zeros_like(accuracyX, dtype=float)
+    for index, value in enumerate(accuracyX):
+        labels_predicted1 = k_nearest_neighbors(features_train1, labels_train1, features_test1, value)
+        accuracy_y[index] = np.mean(labels_predicted1 == labels_test1) * 100
+
+    return accuracy_y
+
+
+t_size = 0.2
+accuracyY1 = split_and_iterate_k(test_size=t_size, random_state=33)
+# accuracyY2 = split_and_iterate_k(test_size=t_size, random_state=17)
+# accuracyY3 = split_and_iterate_k(test_size=t_size, random_state=1)
+# accuracyY4 = split_and_iterate_k(test_size=t_size, random_state=None)
+accuracyY5 = split_and_iterate_k(test_size=t_size, random_state=17, stratify=labels)
+# accuracyY6 = split_and_iterate_k(test_size=t_size, random_state=33, stratify=labels)
+
+fig, ax = plt.subplots()
+
+ax.plot(accuracyX, accuracyY1, label="test_size=" + str(t_size) + ", random_state=33")
+# ax.plot(accuracyX, accuracyY2, label="test_size=" + str(t_size) + ", random_state=17")
+# ax.plot(accuracyX, accuracyY3, label="test_size=" + str(t_size) + ", random_state=1")
+# ax.plot(accuracyX, accuracyY4, label="test_size=" + str(t_size) + ", random_state=None")
+ax.plot(accuracyX, accuracyY5, label="test_size=" + str(t_size) + ", random_state=17, stratified")
+# ax.plot(accuracyX, accuracyY6, label="test_size=" + str(t_size) + ", random_state=33, stratified")
+
+ax.set_xlabel("Количество анализируемых соседей")
+ax.set_ylabel("Точность")
+ax.legend()
+
+# plt.plot(accuracyX, accuracyY)
+plt.show()
+
