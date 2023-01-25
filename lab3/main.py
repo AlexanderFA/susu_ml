@@ -105,7 +105,6 @@ def k_nearest_neighbors(train_set, train_labels, test_set, num_neighbors):
 # prediction_array = k_nearest_neighbors(features, labels, dataset, 3)
 # print(prediction_array)
 
-# features_train, features_test, labels_train, labels_test = train_test_split(features, labels, test_size=0.67, random_state=33, stratify=labels)
 features_train, features_test, labels_train, labels_test = train_test_split(features, labels, test_size=0.2)
 
 # почти тоже самое что _, counts = np.unique(labels_test, return_counts=True)
@@ -128,7 +127,6 @@ def split_and_iterate_k(test_size=0.2, stratify=None, random_state=None):
         labels,
         test_size=test_size,
         random_state=random_state,
-        # stratify=labels
         stratify=stratify
     )
     accuracy_y = np.zeros_like(accuracyX, dtype=float)
@@ -159,7 +157,4 @@ ax.plot(accuracyX, accuracyY5, label="test_size=" + str(t_size) + ", random_stat
 ax.set_xlabel("Количество анализируемых соседей")
 ax.set_ylabel("Точность")
 ax.legend()
-
-# plt.plot(accuracyX, accuracyY)
 plt.show()
-
