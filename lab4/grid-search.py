@@ -34,7 +34,8 @@ for C in C_values:
 
 print(max_score, params)
 
-print(f"При параметрах C = {params['C']} иgamma = {params['gamma']} достигнута наилучшая точность {max_score}\n")
+# При параметрах C = 0.3 и gamma = 100 достигнута наилучшая точность 0.965
+print(f"При параметрах C = {params['C']} и gamma = {params['gamma']} достигнута наилучшая точность {max_score}\n")
 
 svm_classifier = svm.SVC(kernel='rbf', C=params['C'], gamma=params['gamma'])
 svm_classifier.fit(features, labels)
